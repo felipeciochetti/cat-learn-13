@@ -1,0 +1,80 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="col" *ngIf="courseService.lessonDetail.typeFile != '.pdf'">
+          <app-video-play [urlLesson]="url"></app-video-play>
+        </div>
+
+        <div class="col">
+          <h1>
+            <strong>
+              {{ courseService.lessonDetail.name }}
+            </strong>
+          </h1>
+        </div>
+        <div class="col">
+          <mat-divider></mat-divider>
+          <button
+            mat-stroked-button
+            color="primary"
+            matTooltip="editar licao"
+            aria-label="edit licao"
+            (click)="editLesson()"
+          >
+            editar
+          </button>
+
+          <button
+            mat-stroked-button
+            color="warn"
+            matTooltip="excluir licao"
+            aria-label="excluir licao"
+            (click)="confirmDialogDelete()"
+          >
+            deletar
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-4 sidebar-panel">
+        <h1>{{ "courseContent" }}</h1>
+
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="
+              let module of courseService.courseDetail.modules;
+              let i = index
+            "
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ module.name }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ module.description }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item
+                class="panel-lessons"
+                *ngFor="let lesson of module.lessons"
+                style="cursor: pointer"
+                [ngClass]="{
+                  currentLesson: lesson.id === courseService.lessonDetail.id
+                }"
+                (click)="setLessonDetail(lesson)"
+              >
+                <mat-icon matListIcon style="color: blue"
+                  >play_circle_filled
+                </mat-icon>
+                <span matLine>
+                  {{ lesson.name }}
+                </span>
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</mat-card>

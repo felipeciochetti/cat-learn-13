@@ -1,0 +1,59 @@
+<header class="header">
+  <div class="header__top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__left">
+            <ul>
+              <li>
+                <i
+                  class="material-icons"
+                  role="button"
+                  href="#"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  menu
+                </i>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item" routerLink="/new-course"
+                    >novo curso</a
+                  >
+                </div>
+              </li>
+
+              <li><i class="fa fa-envelope"></i> cbg@gmail.com</li>
+              <li>Clube Brasileiro do Gato</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="header__top__right">
+            <div class="header__top__right__social">
+              <app-cart-status></app-cart-status>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <a routerLink="/home" class="logo">Cat Learn</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero__search">
+          <div class="hero__search__form">
+            <form action="#">
+              <app-search-toolbar></app-search-toolbar>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

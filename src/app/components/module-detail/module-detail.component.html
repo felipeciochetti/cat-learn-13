@@ -1,0 +1,117 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <img [src]="getUrlImageCapa(course.id)" class="detail-img" />
+        <div style="text-align: center">
+          <h1 class="mat-h1">
+            <strong>
+              {{ course.name }}
+            </strong>
+          </h1>
+
+          <h1 class="mat-h1">
+            <strong>
+              <h1>{{ module.number }} | {{ module.name }}</h1>
+            </strong>
+          </h1>
+          <mat-divider></mat-divider>
+          <div class="col">
+            <div class="example-button-row">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matTooltip="editar modulo"
+                aria-label="editar module"
+                routerLink="/courses/{{ course.id }}/edit-module/{{
+                  module.id
+                }}"
+                [state]="module"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-raised-button
+                color="warn"
+                matTooltip="deletar modulo"
+                aria-label="deletar module"
+                (click)="confirmModuleDialogDelete(module.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <mat-card>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel
+                *ngFor="let lesson of module.lessons; let i = index"
+                hideToggle
+              >
+                <mat-expansion-panel-header>
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="editar"
+                    aria-label="editar"
+                    routerLink="/module/{{ module.id }}/edit-lesson/{{
+                      lesson.id
+                    }}"
+                    [state]="lesson"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    matTooltip="deletar"
+                    aria-label="deletar"
+                    routerLink="/courses/{{ course.id }}/module/{{ module.id }}"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <mat-panel-title>
+                    {{ lesson.name }}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ lesson.description }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel
+                hideToggle
+                *ngIf="module.lessons == null"
+                [class.text-danger]="module.lessons == null"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Nenhuma Lição nesse Modulo.
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+          <div class="button-wrapper">
+            <button
+              type="button"
+              mat-flat-button
+              color="primary"
+              matTooltip="criar licao"
+              aria-label="create lesson"
+              routerLink="/module/{{ module.id }}/new-lesson"
+              [state]="module"
+            >
+              adicionar licao
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</mat-card>

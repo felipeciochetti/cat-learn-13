@@ -1,0 +1,17 @@
+<div class="header__top__right__auth">
+  <a routerLink="/login" *ngIf="!isAuthenticated"
+    ><i class="fa fa-user"></i> Login</a
+  >
+
+  <i
+    class="fa fa-user"
+    role="button"
+    href="#"
+    id="dropdownMenuLink"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    *ngIf="isAuthenticated"
+  >
+  </i>
+</div>

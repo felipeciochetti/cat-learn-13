@@ -1,0 +1,116 @@
+<mat-card>
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-4">
+        <div>
+          <div class="col">
+            <img src="{{ course.imageUrl }}" class="img-fluid" />
+          </div>
+        </div>
+        <div>
+          <div class="col">
+            <h1 class="mat-h1">
+              <strong>
+                {{ course.name }}
+              </strong>
+            </h1>
+            <div class="mat-h3">
+              {{ course.description }}
+            </div>
+            <div class="mat-h3">
+              <strong>{{ course.price | currency: "USD" }} </strong>
+            </div>
+          </div>
+        </div>
+        <div>
+          <mat-divider></mat-divider>
+          <div class="col">
+            <div class="example-button-row">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matTooltip="editar curso"
+                aria-label="edit curso"
+                routerLink="/courses/{{ course.id }}/edit-course"
+                [state]="course"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                type="button"
+                mat-raised-button
+                color="warn"
+                matTooltip="excluir curso"
+                aria-label="delete curso"
+                (click)="confirmDialogDelete()"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <mat-card>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel
+                *ngFor="let module of course.modules; let i = index"
+                hideToggle
+              >
+                <mat-expansion-panel-header>
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    matTooltip="detalhes"
+                    aria-label="detalhes"
+                    routerLink="/courses/{{ course.id }}/module/{{ module.id }}"
+                    [state]="module"
+                  >
+                    <mat-icon>info</mat-icon>
+                  </button>
+                  <mat-panel-title>
+                    {{ module.number }} | {{ module.name }}
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    {{ module.description }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <div *ngFor="let lesson of module.lessons; let i = index">
+                  <p>{{ lesson.name }}</p>
+                </div>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel
+                hideToggle
+                *ngIf="course.modules == null"
+                [class.text-danger]="course.modules == null"
+              >
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Nenhum modulo para esse curso.
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </mat-card-content>
+
+          <div class="button-wrapper">
+            <button
+              type="button"
+              mat-flat-button
+              color="primary"
+              matTooltip="criar modulo"
+              aria-label="create module"
+              routerLink="/course/{{ course.id }}/new-module"
+              [state]="course"
+            >
+              adicionar modulo
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</mat-card>

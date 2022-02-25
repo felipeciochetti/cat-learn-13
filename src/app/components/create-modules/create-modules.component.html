@@ -1,0 +1,114 @@
+<mat-card>
+  <div class="example-container">
+    <form [formGroup]="createModuleForm" ngxsForm="forms.createModuleForm">
+      <mat-card-content>
+        <div class="row">
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div>
+                <img
+                  [src]="getUrlImageCapa(courseService.courseDetail.id)"
+                  class="detail-img"
+                />
+              </div>
+              <div style="text-align: center">
+                <h1 class="mat-h1">
+                  <strong>
+                    {{ courseService.courseDetail.name }}
+                  </strong>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <!-- TITLE -->
+            <mat-card-title *ngIf="!isEdit">{{
+              "labelNewModule"
+            }}</mat-card-title>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Numero"
+                    formControlName="number"
+                    type="”number”"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input matInput placeholder="Nome" formControlName="name" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Descrição"
+                    formControlName="description"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <mat-label>Data Liberação</mat-label>
+                  <!-- #docregion toggle -->
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    formControlName="dateRelease"
+                  />
+
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <!-- #enddocregion toggle -->
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Criado por"
+                    formControlName="createdby"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Duração"
+                    formControlName="duration"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="button-wrapper">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                matTooltip="salvar modulo"
+                aria-label="create module"
+                (click)="createModule()"
+              >
+                Salvar
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </form>
+  </div>
+</mat-card>
