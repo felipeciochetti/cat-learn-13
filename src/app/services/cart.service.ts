@@ -39,7 +39,7 @@ export class CartService {
       return;
      }
      else {
-       console.log('add cart item')
+       console.log('add cart item id > ' + theCartItem.id)
        // just add the item to the array
        this.cartItems.push(theCartItem);
      }

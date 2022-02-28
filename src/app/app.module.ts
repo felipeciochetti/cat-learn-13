@@ -121,7 +121,9 @@ const routes: Routes = [
     CourseListComponent,
     CourseDetailComponent,
 
-    
+    LoginStatusComponent,
+    LoginComponent,
+    CreateCourseComponent,
     SearchToolbarComponent,
     CreateCourseComponent,
     CreateModulesComponent,

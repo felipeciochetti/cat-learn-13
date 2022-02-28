@@ -67,7 +67,7 @@ export class CourseDetailComponent implements OnInit {
 
  addToCart(){
 
-  const cartItem = new CartItem(this.courseService.courseDetail);
+  const cartItem = new CartItem(this.course);
 
   this.cartService.addToCart(cartItem);
 }
@@ -89,6 +89,8 @@ confirmDialogDelete(): void {
       console.log('');
     }
   });
+
+  
 }
 
 
