@@ -16,86 +16,93 @@ import { NavigationService } from 'src/app/services/navigation.service';
 })
 export class ModuleDetailComponent implements OnInit {
   
-  
-  
-  module: Module = new Module();
-  course:Course;
+  constructor(
+    public courseService: CourseService,
+    public moduleService: ModulesService,
+    private route: ActivatedRoute,
+    private navigationService: NavigationService,
+    public dialog: MatDialog,
+    public messageService: MessagesService
+   ) {}
 
   options = {
     autoClose: false,
     keepAfterRouteChange: false
   };
-  
-  
-  constructor(
-    public courseService: CourseService,
-    public modulesService: ModulesService,
-    public dialog: MatDialog,
-    private navigationService: NavigationService,
-    public messageService: MessagesService,
-    private route: ActivatedRoute
-  ) {}
+
+    course: Course = new Course();
+
+    modules : Module[] = [];
+
+    courseId : number;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(() => {
-      this.handleModuleDetails();
-    });
-
-    this.course =  history.state;
+    this.handleModuleDetails();
+    
   }
 
   handleModuleDetails() {
     // get the "id" param string. convert string to a number using the "+" symbol
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
+    this.courseId = +this.route.snapshot.paramMap.get('idCourse');
 
-
-
-    this.modulesService.getModule(theCourseId,theModuleId).subscribe(res => {
-      this.module = res;
+    this.moduleService.getModuleList(this.courseId).subscribe(res => {
+      this.modules = res;
+      
     });
-
-    this.courseService.getCourse(theCourseId).subscribe(res => {
+    this.courseService.getCourse(this.courseId).subscribe(res => {
       this.course = res;
-    });
-
-
-  }
-
-  confirmModuleDialogDelete(idModule:number): void {
-    const message = `Deseja deletar o modulo?`;
-  
-    const dialogData = new ConfirmDialogModel('Confirmar', message);
-  
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: '400px',
-      data: dialogData
-    });
-  
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.deleteModule(idModule);
-        console.log('');
-      }
+     
     });
   }
 
-  deleteModule(idModule:number) {
-    this.modulesService.deleteModule(this.course.id,idModule).subscribe(
-      res => {
-        this.messageService.success('Deletado com Sucesso', this.options);
-        this.navigationService.navigateToCourseDetail(this.course.id);
-      },
-      error => {
-        this.messageService.error(error.error, this.options);
-        console.log(error);
-      }
-    );
-  }
-  
-  
+  sortedModules(): Module[] {
+    try{
+ 
+      this.modules.sort((a,b) => a.number.localeCompare(b.number));
+     }catch{
+       
+     }
+     return this.modules;
+ }
+ 
 
-  public getUrlImageCapa(id:number){
-    return this.courseService.getUrlImageCapa(id);
-  }
+
+confirmDialogDelete(): void {
+  const message = `Deseja deletar o Modulo?`;
+
+  const dialogData = new ConfirmDialogModel('Confirmar', message);
+
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: '400px',
+    data: dialogData
+  });
+
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    if (dialogResult) {
+      this.deleteModule();
+      console.log('');
+    }
+  });
+
+  
 }
+
+
+deleteModule() {
+  this.moduleService.deleteModule(this.courseId ,this.modules[0].id).subscribe(
+    res => {
+      this.messageService.success('Deletado com Sucesso', this.options);
+      this.navigationService.navigateToCourses();
+    },
+    error => {
+      this.messageService.error(error.error, this.options);
+      console.log(error);
+    }
+  );
+}
+
+
+  
+}
+  
+  

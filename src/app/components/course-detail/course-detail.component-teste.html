@@ -75,29 +75,34 @@
 
           <!-- Reviews -->
           <div class="mt-6">
-            <h3 class="sr-only">Reviews</h3>
-            <div class="flex items-center">
-              <div class="flex items-center"></div>
-              <p class="sr-only">4 out of 5 stars</p>
-              <a
-                href="#"
-                class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                >117 reviews</a
+            <button
+              type="submit"
+              class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              (click)="addToCart()"
+            >
+              Add to bag
+            </button>
+            <div class="mt-6">
+              <button
+                type="button"
+                class="mr-4 font-medium text-gray-600 hover:text-gray-500"
               >
+                Edit Course
+              </button>
+              <button
+                type="button"
+                routerLink="/course/{{ course.id }}/modules"
+                [state]="course"
+                class="mr-4 font-medium text-gray-600 hover:text-gray-500"
+              >
+                Modulos
+              </button>
             </div>
           </div>
-
-          <button
-            type="submit"
-            class="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            (click)="addToCart()"
-          >
-            Add to bag
-          </button>
         </div>
       </div>
-    </div>
 
-    <!-- Product info -->
+      <!-- Product info -->
+    </div>
   </div>
 </div>

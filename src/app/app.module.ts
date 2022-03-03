@@ -88,7 +88,7 @@ const routes: Routes = [
 
   { path: 'module/:idModule/edit-lesson/:idLesson', component: CreateLessonComponent },
 
-  { path: 'courses/:idCourse/module/:idModule', component: ModuleDetailComponent },
+  { path: 'course/:idCourse/modules', component: ModuleDetailComponent },
 
 
   { path: 'lesson/:idCourse/:idModule/:idLesson', component: LessonComponent },
