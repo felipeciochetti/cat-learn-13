@@ -1,114 +1,115 @@
-<mat-card>
-  <div class="example-container">
-    <form [formGroup]="createModuleForm" ngxsForm="forms.createModuleForm">
-      <mat-card-content>
-        <div class="row">
-          <div class="col-sm-2">
-            <div class="form-group">
-              <div>
-                <img
-                  [src]="getUrlImageCapa(courseService.courseDetail.id)"
-                  class="detail-img"
-                />
-              </div>
-              <div style="text-align: center">
-                <h1 class="mat-h1">
-                  <strong>
-                    {{ courseService.courseDetail.name }}
-                  </strong>
-                </h1>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm">
-            <!-- TITLE -->
-            <mat-card-title *ngIf="!isEdit">{{
-              "labelNewModule"
-            }}</mat-card-title>
-
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field>
-                  <input
-                    matInput
-                    placeholder="Numero"
-                    formControlName="number"
-                    type="”number”"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field>
-                  <input matInput placeholder="Nome" formControlName="name" />
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field>
-                  <input
-                    matInput
-                    placeholder="Descrição"
-                    formControlName="description"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field>
-                  <mat-label>Data Liberação</mat-label>
-                  <!-- #docregion toggle -->
-                  <input
-                    matInput
-                    [matDatepicker]="picker"
-                    formControlName="dateRelease"
-                  />
-
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker"
-                  ></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                  <!-- #enddocregion toggle -->
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field>
-                  <input
-                    matInput
-                    placeholder="Criado por"
-                    formControlName="createdby"
-                  />
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field>
-                  <input
-                    matInput
-                    placeholder="Duração"
-                    formControlName="duration"
-                  />
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="button-wrapper">
-              <button
-                type="button"
-                mat-raised-button
-                color="primary"
-                matTooltip="salvar modulo"
-                aria-label="create module"
-                (click)="createModule()"
-              >
-                Salvar
-              </button>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-    </form>
+<form [formGroup]="createModuleForm" ngxsForm="forms.createModuleForm">
+  
+  <div class="w-full px-3">
+    <h1 class="mat-h1" *ngIf="!isEdit">
+      <strong> Modulo </strong>
+    </h1>
   </div>
-</mat-card>
+
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-numero"
+      >
+        Numero
+      </label>
+      <input
+        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        id="grid-numero"
+        type="text"
+        matInput
+        formControlName="numero"
+      />
+
+     
+    </div>
+  </div>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-first-name"
+      >
+        Modulo
+      </label>
+      <input
+        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        id="grid-first-name"
+        type="text"
+        matInput
+        formControlName="name"
+      />
+
+     
+    </div>
+  </div>
+
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-last-name"
+      >
+        Descrição
+      </label>
+      
+        <textarea matInput id="grid-last-name"  formControlName="description" name="about" rows="5" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" ></textarea>
+      
+      
+    </div>
+  </div>
+  
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-data-release"
+      >
+        Data Liberação
+      </label>
+      <input
+        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+        id="grid-data-release"
+        matInput
+            [matDatepicker]="picker"
+            formControlName="dateRelease"
+            type="text"
+            name="dateRelease"
+            id="dateRelease"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </div>
+  </div>
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full px-3">
+      <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-duracao-name"
+      >
+        Duração
+      </label>
+      <input
+        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        id="grid-duracao-name"
+        type="text"
+        matInput
+        formControlName="duration"
+      />
+
+     
+    </div>
+  </div>
+  
+    <button
+      type="submit"
+      class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      (click)="createModule()"
+      >
+      Salvar
+    </button>
+ 
+
+  
+</form>

@@ -57,13 +57,14 @@ export class CreateCourseComponent implements OnInit {
 
   createCourse() {
     if (!this.createCourseForm.valid) {
+ 
       console.log(this.createCourseForm.valid);
       return;
     }
 
     // Make sure to create a deep copy of the form-model
     this.course = Object.assign({}, this.createCourseForm.value);
-
+    
     
 
     this.saveNewCourse();

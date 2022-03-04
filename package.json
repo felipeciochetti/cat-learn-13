@@ -23,6 +23,7 @@
     "@okta/okta-angular": "^3.2.2",
     "@okta/okta-signin-widget": "^5.10.1",
     "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.5.0",
     "ng2-currency-mask": "^13.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
