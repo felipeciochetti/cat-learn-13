@@ -37,9 +37,7 @@ url = '';
 
     console.log("create component lesson");
     const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
-    const theLessonId: number = +this.route.snapshot.paramMap.get('idLesson');
-
+    
        this.url = this.getContentLesson();
     console.log(this.url);
   }

@@ -20,7 +20,6 @@ import { Course } from 'src/app/model/course';
 })
 export class CreateLessonComponent implements OnInit {
   lesson: Lesson;
-  module:Module;
   course:Course;
 
   idModule: number;
@@ -62,25 +61,22 @@ export class CreateLessonComponent implements OnInit {
       this.createLessonForm.patchValue(history.state);
       
       
-      this.route.params.subscribe(params => 
-        this.idModule = Number.parseInt(params['idModule']));
-    }else {
-        
-      this.module =  history.state;
-      this.idModule = this.module.id;
-
+      
     } 
-  
-
+    
+    
+    this.route.params.subscribe(params => 
+      this.idModule = Number.parseInt(params['idModule']));
 
 
   }
 
   createLesson() {
+    /*
     if (!this.createLessonForm.valid) {
       return;
     }
-
+    */
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
     

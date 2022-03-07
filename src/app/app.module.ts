@@ -91,7 +91,7 @@ const routes: Routes = [
   { path: 'course/:idCourse/modules', component: ModuleDetailComponent },
 
 
-  { path: 'lesson/:idCourse/:idModule/:idLesson', component: LessonComponent },
+  { path: 'course/:idCourse/lessons', component: LessonComponent },
 
   {path: 'login/callback', component: OktaCallbackComponent},
   {path: 'login', component: LoginComponent},

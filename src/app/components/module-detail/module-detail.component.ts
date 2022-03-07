@@ -67,7 +67,7 @@ export class ModuleDetailComponent implements OnInit {
  
 
 
-confirmDialogDelete(): void {
+confirmDialogDelete(moduleId: number): void {
   const message = `Deseja deletar o Modulo?`;
 
   const dialogData = new ConfirmDialogModel('Confirmar', message);
@@ -79,7 +79,7 @@ confirmDialogDelete(): void {
 
   dialogRef.afterClosed().subscribe(dialogResult => {
     if (dialogResult) {
-      this.deleteModule();
+      this.deleteModule(moduleId);
       console.log('');
     }
   });
@@ -88,8 +88,8 @@ confirmDialogDelete(): void {
 }
 
 
-deleteModule() {
-  this.moduleService.deleteModule(this.courseId ,this.modules[0].id).subscribe(
+deleteModule(moduleId: number) {
+  this.moduleService.deleteModule(this.courseId ,moduleId).subscribe(
     res => {
       this.messageService.success('Deletado com Sucesso', this.options);
       this.navigationService.navigateToCourses();
