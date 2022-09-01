@@ -92,7 +92,7 @@ export class CreateLessonComponent implements OnInit {
     if (!this.createLessonForm.valid) {
       return;
     }
-
+    */
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
     this.saveNewLesson();

@@ -27,6 +27,15 @@
   <mat-expansion-panel-header>
     <button
       mat-icon-button
+      color="basic"
+      aria-label="create Lição"
+      routerLink="/module/{{ module.id }}/new-lesson"
+    >
+      <mat-icon>home</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
       color="primary"
       matTooltip="adicionar licao"
       aria-label="adicionar licao"
