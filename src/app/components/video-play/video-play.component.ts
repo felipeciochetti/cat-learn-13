@@ -1,18 +1,21 @@
-import { Input } from '@angular/core';
+import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-video-play',
   templateUrl: './video-play.component.html',
-  styleUrls: ['./video-play.component.css']
+  styleUrls: ['./video-play.component.css'],
 })
 export class VideoPlayComponent implements OnInit {
-
   @Input('urlLesson') urlLesson: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+  name = 'Angular';
+  @ViewChild('videoPlayer', { static: false }) videoplayer: ElementRef;
+  isPlay: boolean = false;
+  toggleVideo(event: any) {
+    this.videoplayer.nativeElement.play();
   }
-
 }

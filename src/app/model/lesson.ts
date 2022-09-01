@@ -15,5 +15,5 @@ export class Lesson {
   contentFilePath: string;
   contentFileName: string;
   typeFile: string;
-  module: Module;
+  idModule: number;
 }

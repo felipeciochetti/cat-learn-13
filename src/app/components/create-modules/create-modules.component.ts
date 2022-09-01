@@ -13,18 +13,15 @@ import { Course } from 'src/app/model/course';
 @Component({
   selector: 'app-create-modules',
   templateUrl: './create-modules.component.html',
-  styleUrls: ['./create-modules.component.css']
+  styleUrls: ['./create-modules.component.css'],
 })
 export class CreateModulesComponent implements OnInit {
-
   module: Module;
   moduleList: Module[];
 
   isEdit: boolean = false;
 
-  course : Course;
-
-  idCourse: number;
+  course: Course;
 
   constructor(
     private fb: FormBuilder,
@@ -38,70 +35,83 @@ export class CreateModulesComponent implements OnInit {
 
   createModuleForm: FormGroup = this.fb.group({
     id: ['', []],
-  
+
     name: ['', [Validators.required, Validators.minLength(4)]],
-   
-    number: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-    duration: ['', [Validators.required, Validators.minLength(1)]],
     description: ['', [Validators.required, Validators.minLength(5)]],
+    number: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+
+    duration: [],
     dateRelease: [],
     createdby: [],
-    lessons:[[],[]]
+    lessons: [[], []],
   });
 
-  
-    ngOnInit(): void {
-      // check is editing...
-      if (this.router.url.indexOf('edit') >= 0) {
-        this.isEdit = true;
-        this.createModuleForm.patchValue(history.state);
-        
-        
-        this.route.params.subscribe(params => 
-          this.idCourse = Number.parseInt(params['idCourse']));
-      }else {
-          
-        this.course =  history.state;
-        this.idCourse = this.course.id;
+  ngOnInit(): void {
+    // check is editing...
+    if (this.router.url.indexOf('edit') >= 0) {
+      this.isEdit = true;
 
-      } 
-    
-  
-   }
+      this.route.params.subscribe((params) => {
+        var idModule = Number.parseInt(params['idModule']);
+        this.moduleService.getModule(idModule).subscribe((data) => {
+          this.module = data;
+
+          this.createModuleForm.patchValue(this.module);
+        });
+      });
+    }
+
+    this.route.params.subscribe((params) => {
+      var idCourse = Number.parseInt(params['idCourse']);
+      this.courseService.getCourse(idCourse).subscribe((data) => {
+        this.course = data;
+      });
+    });
+  }
 
   createModule() {
+    Object.keys(this.createModuleForm.controls).forEach((field) => {
+      const control = this.createModuleForm.get(field); // {2}
+      control.markAsTouched({ onlySelf: true }); // {3}
+    });
+
     if (!this.createModuleForm.valid) {
       return;
     }
 
     this.module = Object.assign({}, this.createModuleForm.value);
 
-
-    
-
     this.saveModule();
-
-    
   }
   saveModule() {
-     this.moduleService.saveModule(this.module,this.idCourse).subscribe(
+    this.moduleService.saveModule(this.module, this.course.id).subscribe(
       (newHero: Module) => {
-        
+        this.navigationService.navigateToModuleList(this.course.id);
         this.messagesService.success('Salvo com Sucesso', null);
       },
-      error => {
+      (error) => {
         this.messagesService.error(error.error, null);
         console.log(error);
       }
     );
-    this.navigationService.navigateToCourses();
-
-
   }
 
-  
-  
-  public getUrlImageCapa(id:number){
-    return this.courseService.getUrlImageCapa(id);
+  isFieldValid(field: string) {
+    return (
+      !this.createModuleForm.get(field).valid &&
+      this.createModuleForm.get(field).touched
+    );
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field),
+    };
+  }
+
+  public goToModulePage() {
+    var idCourse = this.course.id;
+    this.router.navigateByUrl('/course/' + idCourse + '/modules');
   }
 }

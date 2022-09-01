@@ -10,7 +10,6 @@ import { CourseListComponent } from './components/course-list/course-list.compon
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -42,40 +41,45 @@ import { LessonComponent } from './components/lesson/lesson.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
-
 import {
   MatNativeDateModule,
   MatRippleModule,
-  MAT_DATE_LOCALE
+  MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ToastComponent } from './components/toast/toast.component';
-import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { VideoPlayComponent } from './components/video-play/video-play.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
-import { OktaAuthModule, OktaCallbackComponent, OKTA_CONFIG } from '@okta/okta-angular';
+import {
+  OktaAuthModule,
+  OktaCallbackComponent,
+  OKTA_CONFIG,
+} from '@okta/okta-angular';
 import catLearnConfig from './config/cat-learn-config';
 import { HomeComponent } from './components/home/home.component';
- 
+import { FieldErrorDisplayComponent } from './field-error-display/field-error-display.component';
 
-const oktaConfig = Object.assign({
-  onAuthRequired: (_oktaAuth: any, injector: { get: (arg0: typeof Router) => any; }) => {
-    const router = injector.get(Router);
+const oktaConfig = Object.assign(
+  {
+    onAuthRequired: (
+      _oktaAuth: any,
+      injector: { get: (arg0: typeof Router) => any }
+    ) => {
+      const router = injector.get(Router);
 
-    // Redirect the user to your custom login page
-    router.navigate(['/login']);
-  }
-}, catLearnConfig.oidc);
-
+      // Redirect the user to your custom login page
+      router.navigate(['/login']);
+    },
+  },
+  catLearnConfig.oidc
+);
 
 const routes: Routes = [
-
-
   { path: 'new-course', component: CreateCourseComponent },
   { path: 'course/:idCourse/new-module', component: CreateModulesComponent },
   { path: 'module/:idModule/new-lesson', component: CreateLessonComponent },
@@ -83,18 +87,22 @@ const routes: Routes = [
   { path: 'courses/:id', component: CourseDetailComponent },
   { path: 'courses/:idCourse/edit-course', component: CreateCourseComponent },
 
+  {
+    path: 'courses/:idCourse/edit-module/:idModule',
+    component: CreateModulesComponent,
+  },
 
-  { path: 'courses/:idCourse/edit-module/:idModule', component: CreateModulesComponent },
-
-  { path: 'module/:idModule/edit-lesson/:idLesson', component: CreateLessonComponent },
+  {
+    path: 'module/:idModule/edit-lesson/:idLesson',
+    component: CreateLessonComponent,
+  },
 
   { path: 'course/:idCourse/modules', component: ModuleDetailComponent },
 
+  { path: 'lesson/:idLesson', component: LessonComponent },
 
-  { path: 'lesson/:idCourse/:idModule/:idLesson', component: LessonComponent },
-
-  {path: 'login/callback', component: OktaCallbackComponent},
-  {path: 'login', component: LoginComponent},
+  { path: 'login/callback', component: OktaCallbackComponent },
+  { path: 'login', component: LoginComponent },
 
   { path: 'cart-details', component: CartDetailsComponent },
 
@@ -103,20 +111,17 @@ const routes: Routes = [
   { path: '', redirectTo: '/courses', pathMatch: 'full' },
   { path: '**', redirectTo: '/courses', pathMatch: 'full' },
 
-
   //USER = MEANS USER LOGADO
-
 
   // VISITOR = MEANS VISITOR
 
   { path: 'visitor/courses', component: CourseListComponent },
-
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    
+
     HeaderComponent,
     CourseListComponent,
     CourseDetailComponent,
@@ -139,9 +144,9 @@ const routes: Routes = [
     CarouselComponent,
     CartStatusComponent,
     CartDetailsComponent,
-    
-    
-    HomeComponent
+
+    HomeComponent,
+    FieldErrorDisplayComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -174,12 +179,13 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatIconModule,
     MatExpansionModule,
-    OktaAuthModule
+    OktaAuthModule,
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-br' },{ provide: OKTA_CONFIG, useValue: oktaConfig }],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-br' },
+    { provide: OKTA_CONFIG, useValue: oktaConfig },
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [ToastComponent]
+  entryComponents: [ToastComponent],
 })
 export class AppModule {}
-
-

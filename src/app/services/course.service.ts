@@ -8,7 +8,7 @@ import {
   HttpClient,
   HttpHeaders,
   HttpErrorResponse,
-  HttpParams
+  HttpParams,
 } from '@angular/common/http';
 
 import { Observable, of, throwError } from 'rxjs';
@@ -20,14 +20,13 @@ import { UploadService } from './upload.service';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourseService {
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  
   public modules: Module[] = [];
   public courseDetail = new Course();
   public moduleDetail = new Module();
@@ -48,31 +47,27 @@ export class CourseService {
     // need to build URL based on category id
     const courseListUrl = this.urlService.courseListUrl;
 
-    
-
-    return this.httpClient
-      .get<Course[]>(courseListUrl);
+    return this.httpClient.get<Course[]>(courseListUrl);
   }
   getCourse(id: number): Observable<Course> {
     const courseListUrl = this.urlService.courseListUrl;
 
     return this.httpClient.get<Course>(courseListUrl + '/' + id);
-
-    
   }
   getCourseByName(name: string): Observable<Course[]> {
     const courseListUrlByName = this.urlService.searchCoursesUrl;
-    
 
-    return this.httpClient.get<Course[]>(courseListUrlByName ,{params:{name}});
+    return this.httpClient.get<Course[]>(courseListUrlByName, {
+      params: { name },
+    });
   }
 
-  fetchImageCapa(id: number):Observable<Blob>{
-    
+  fetchImageCapa(id: number): Observable<Blob> {
     const courseListUrl = this.urlService.courseListUrl;
 
-    return this.httpClient.get(courseListUrl + '/' + id + '/imageCapa', { responseType: 'blob' });
-    
+    return this.httpClient.get(courseListUrl + '/img/' + id, {
+      responseType: 'blob',
+    });
   }
   searchCourse(name: string): Observable<Course[]> {
     // need to build URL based on the keyword
@@ -99,7 +94,7 @@ export class CourseService {
       this.httpOptions
     );
   }
-  updateCourse(course:Course) {
+  updateCourse(course: Course) {
     return this.httpClient.put<Course>(
       this.urlService.courseListUrl + '/' + this.courseDetail.id,
       course,
@@ -140,11 +135,6 @@ export class CourseService {
     this.lessonDetail = lesson;
   }
 
-  
-  public getUrlImageCapa(id:number){
-    return this.urlService.getUrlImageCapa(id);
-  }
- 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

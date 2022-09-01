@@ -12,38 +12,58 @@ import { MatDialog } from '@angular/material/dialog';
 import { MessagesService } from 'src/app/services/messages.service';
 import {
   ConfirmDialogModel,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
 } from '../confirm-dialog/confirm-dialog.component';
+import { ModulesService } from 'src/app/services/modules.service';
 
 @Component({
   selector: 'app-lesson',
   templateUrl: './lesson.component.html',
-  styleUrls: ['./lesson.component.css']
+  styleUrls: ['./lesson.component.css'],
 })
 export class LessonComponent implements OnInit {
+  url = '';
 
-url = '';
+  course: Course;
+  module: Module;
+  lesson: Lesson = new Lesson();
 
   constructor(
     public lessonService: LessonsService,
     public courseService: CourseService,
+    public moduleService: ModulesService,
     public navigationService: NavigationService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     public messageService: MessagesService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    console.log('create component lesson');
 
-    console.log("create component lesson");
-    const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
-    const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
-    const theLessonId: number = +this.route.snapshot.paramMap.get('idLesson');
+    const lessonId: number = +this.route.snapshot.paramMap.get('idLesson');
 
-       this.url = this.getContentLesson();
-    console.log(this.url);
+    this.loadLesson(lessonId);
+
+    //this.url = this.getContentLesson();
+    //console.log('url > ' + this.url);
   }
-
+  async loadLesson(lessonId): Promise<String> {
+    return new Promise((resolve, reject) => {
+      this.lessonService.getLesson(lessonId).subscribe((res) => {
+        this.lesson = res;
+        this.url = this.getContentLesson();
+        this.moduleService.getModule(this.lesson.idModule).subscribe((res) => {
+          this.module = res;
+          this.courseService
+            .getCourse(this.module.idCourse)
+            .subscribe((res) => {
+              this.course = res;
+            });
+        });
+      });
+    });
+  }
   setLessonDetail(lessonDetail: Lesson) {
     this.courseService.setLessonDetail(lessonDetail);
     this.url = this.getContentLesson();
@@ -55,51 +75,11 @@ url = '';
     );
   }
 
-  editLesson() {
-   
-  }
+  editLesson() {}
 
-  confirmDialogDelete(): void {
-    const message = `Deseja deletar a Licao?`;
-
-    const dialogData = new ConfirmDialogModel('Confirmar', message);
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      maxWidth: '400px',
-      data: dialogData
-    });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        this.deleteLesson();
-        console.log('');
-      }
-    });
-  }
-  deleteLesson() {
-    this.lessonService.deleteLesson(1,1).subscribe(
-      res => {
-        this.messageService.success('Deletado com Sucesso', null);
-        this.navigationService.navigateToCourseDetail(
-          this.courseService.courseDetail.id);
-      },
-      error => {
-        this.messageService.error(error.error, null);
-        console.log(error);
-      }
+  getContentLesson() {
+    return (
+      this.lessonService.getContentStreamLesson() + this.lesson.id + '/stream'
     );
   }
-
-  getContentLesson(){
-
-    if(this.courseService.lessonDetail.typeFile == ".pdf"){
-      return this.lessonService.getContentPdfLesson();
-      
-    }else{
-      return this.lessonService.getContentStreamLesson();
-
-
-    }
-  }
-
 }

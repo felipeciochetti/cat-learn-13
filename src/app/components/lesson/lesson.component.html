@@ -2,16 +2,21 @@
   <div class="example-container">
     <div class="row">
       <div class="col-sm-8">
-        <div class="col" *ngIf="courseService.lessonDetail.typeFile != '.pdf'">
+        <div class="col" *ngIf="lesson.contentFileName != 'pdf'">
           <app-video-play [urlLesson]="url"></app-video-play>
+        </div>
+        <div class="col" *ngIf="lesson.contentFileName == 'pdf'">
+          <app-video-play [urlLesson]="url"></app-video-play>
+          pdf
         </div>
 
         <div class="col">
           <h1>
             <strong>
-              {{ courseService.lessonDetail.name }}
+              {{ lesson.name }}
             </strong>
           </h1>
+          {{ url }}
         </div>
         <div class="col">
           <mat-divider></mat-divider>
@@ -30,7 +35,6 @@
             color="warn"
             matTooltip="excluir licao"
             aria-label="excluir licao"
-            (click)="confirmDialogDelete()"
           >
             deletar
           </button>
@@ -60,7 +64,7 @@
                 *ngFor="let lesson of module.lessons"
                 style="cursor: pointer"
                 [ngClass]="{
-                  currentLesson: lesson.id === courseService.lessonDetail.id
+                  currentLesson: lesson.id === lesson.id
                 }"
                 (click)="setLessonDetail(lesson)"
               >

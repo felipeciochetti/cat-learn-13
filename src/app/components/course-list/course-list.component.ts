@@ -8,7 +8,7 @@ import { CaroseulService } from 'src/app/services/caroseul.service';
 @Component({
   selector: 'app-course-list',
   templateUrl: './course-list.component copy.html',
-  styleUrls: ['./course-list.component.css']
+  styleUrls: ['./course-list.component.css'],
 })
 export class CourseListComponent implements OnInit {
   courses: Course[];
@@ -19,67 +19,66 @@ export class CourseListComponent implements OnInit {
   constructor(
     private couserService: CourseService,
     private route: ActivatedRoute,
-    private urlService:UrlsService,
+    private urlService: UrlsService,
     private caroseulService: CaroseulService
   ) {}
 
   ngOnInit(): void {
-    
-    
     this.route.paramMap.subscribe(() => {
       this.getCoursesList();
     });
 
     this.customOptions = null;
-   
   }
 
   getCoursesList() {
-
     this.searchMode = this.route.snapshot.paramMap.has('name');
 
-    if(this.searchMode){
+    if (this.searchMode) {
       this.searchCourse();
-    }else{
+    } else {
       this.getAllCourseList();
     }
-
   }
 
-
   getAllCourseList() {
-    this.couserService.getCourseList().subscribe(data => {
+    this.couserService.getCourseList().subscribe((data) => {
       this.courses = data;
     });
-    /*
-    this.couserService.getCourseList().subscribe(data => {
+
+    this.couserService.getCourseList().subscribe((data) => {
       this.courses = data;
-      data.forEach(obj => this.couserService.fetchImageCapa(obj.id).subscribe(img => this.createImageCapa(obj,img)))
+      data.forEach((obj) =>
+        this.couserService
+          .fetchImageCapa(obj.id)
+          .subscribe((img) => this.createImageCapa(obj, img))
+      );
     });
-    */
   }
 
   searchCourse() {
     const theKeyword: string = this.route.snapshot.paramMap.get('name');
 
-
     // now search for the products using keyword
-    this.couserService.searchCourse(theKeyword).subscribe(data => {
+    this.couserService.searchCourse(theKeyword).subscribe((data) => {
       this.courses = data;
     });
   }
 
-  private createImageCapa(course:Course, image: any) {
-    console.log(' >>> ' + image && image.size > 0);
+  private createImageCapa(course: Course, image: any) {
     if (image && image.size > 0) {
-      console.log('show > ' + image);
-      course.imageToShow = image;
-      
-     }
-    }
-    
-    public getUrlImageCapa(id:number){
-      return this.couserService.getUrlImageCapa(id);
-    }    
+      let reader = new FileReader();
 
+      reader.addEventListener(
+        'load',
+        () => {
+          course.imageToShow = reader.result;
+        },
+        false
+      );
+
+      reader.readAsDataURL(image);
+    } else {
+    }
   }
+}

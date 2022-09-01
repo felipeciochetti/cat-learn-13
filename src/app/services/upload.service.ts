@@ -4,7 +4,7 @@ import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploadService {
   constructor(
@@ -12,13 +12,15 @@ export class UploadService {
     private urlService: UrlsService
   ) {}
 
-  uploadImage(code: string, selectedFile: string) {
-    console.log('send img...')
+  uploadImage(id: number, selectedFile: string) {
+    console.log('send img...');
     const fd = new FormData();
     fd.append('file', selectedFile);
+
+    fd.append('fileName', 'imagem_capa_course.jpg');
     return this.httpClient
-      .post(this.urlService.uploadImageCourse + '/' + code, fd)
-      .subscribe(res => {
+      .post(this.urlService.uploadImageCourse + id, fd)
+      .subscribe((res) => {
         console.log(res);
       });
   }
@@ -34,7 +36,7 @@ export class UploadService {
       formData,
       {
         reportProgress: true,
-        responseType: 'json'
+        responseType: 'json',
       }
     );
 
@@ -42,9 +44,7 @@ export class UploadService {
   }
 
   uploadContentLesson(
-    codeCourse: string,
-    codeModule: string,
-    codeLesson: string,
+    codeLesson: number,
     selectedFile: string,
     selectedFileName: string
   ): Observable<HttpEvent<any>> {
@@ -55,19 +55,11 @@ export class UploadService {
 
     const req = new HttpRequest(
       'POST',
-      this.urlService.uploadContentLesson +
-        '/' +
-        codeCourse +
-        '/' +
-        codeModule +
-        '/' +
-        codeLesson +
-        '/' +
-        selectedFileName,
+      this.urlService.uploadContentLesson + codeLesson,
       formData,
       {
         reportProgress: true,
-        responseType: 'json'
+        responseType: 'json',
       }
     );
 

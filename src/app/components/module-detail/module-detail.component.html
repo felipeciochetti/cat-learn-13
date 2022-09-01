@@ -1,12 +1,43 @@
 <h2 class="mb-2 text-2xl font-extrabold tracking-tight text-gray-900">
-  {{ course.name }} - Modulos
+  {{ course.name }}
 </h2>
-
+<h4 class="mb-2 text-1xl tracking-tight text-gray-900">
+  {{ course.description }}
+</h4>
+<div class="flex flex-wrap">
+  <button
+    type="button"
+    routerLink="/courses/{{ course.id }}/edit-course"
+    class="mt-4 bg-orange-600 hover:bg-orange-700 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+  >
+    editar
+  </button>
+  <button
+    type="button"
+    (click)="confirmDialogCourseDelete()"
+    class="mt-4 bg-red-600 hover:bg-red-700 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+  >
+    deletar courso
+  </button>
+</div>
+<h2 class="mb-2 text-2xl font-extrabold tracking-tight text-gray-900">
+  Modulos
+</h2>
 <mat-expansion-panel *ngFor="let module of modules; let i = index" hideToggle>
   <mat-expansion-panel-header>
     <button
       mat-icon-button
       color="primary"
+      matTooltip="adicionar licao"
+      aria-label="adicionar licao"
+      routerLink="/module/{{ module.id }}/new-lesson"
+      [state]="module"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="warn"
       matTooltip="editar"
       aria-label="editar"
       routerLink="/courses/{{ courseId }}/edit-module/{{ module.id }}"
@@ -14,13 +45,51 @@
     >
       <mat-icon>edit</mat-icon>
     </button>
+    <button
+      mat-icon-button
+      color="accent"
+      matTooltip="editar"
+      aria-label="editar"
+      (click)="confirmDialogDelete(module.idCourse, module.id)"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
     <mat-panel-title> {{ module.number }} | {{ module.name }} </mat-panel-title>
     <mat-panel-description>
       {{ module.description }}
     </mat-panel-description>
   </mat-expansion-panel-header>
   <div *ngFor="let lesson of module.lessons; let i = index">
-    <p>{{ lesson.name }}</p>
+    <p>
+      {{ lesson.name }}
+      <button
+        mat-icon-button
+        color="primary"
+        matTooltip="visualizar"
+        aria-label="visualizar"
+        routerLink="/lesson/{{ lesson.id }}"
+      >
+        <mat-icon>timelapse</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="warn"
+        matTooltip="editar"
+        aria-label="editar"
+        routerLink="/module/{{ module.id }}/edit-lesson/{{ lesson.id }}"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="accent"
+        matTooltip="editar"
+        aria-label="editar"
+        (click)="confirmDialogLessonDelete(lesson.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </p>
   </div>
 </mat-expansion-panel>
 
@@ -37,7 +106,7 @@
   type="button"
   routerLink="/course/{{ course.id }}/new-module"
   [state]="course"
-  class="mt-4 bg-indigo-600 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  class="mt-4 bg-blue-600 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 >
   Add New Modulo
 </button>

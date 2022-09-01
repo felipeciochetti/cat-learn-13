@@ -14,7 +14,7 @@ import { Module } from 'src/app/model/module';
 @Component({
   selector: 'app-create-course',
   templateUrl: './create-course.component.html',
-  styleUrls: ['./create-course.component.css']
+  styleUrls: ['./create-course.component.css'],
 })
 export class CreateCourseComponent implements OnInit {
   today: number = Date.now();
@@ -36,52 +36,62 @@ export class CreateCourseComponent implements OnInit {
 
   createCourseForm: FormGroup = this.fb.group({
     id: ['', []],
-    
+
     name: ['', [Validators.required, Validators.minLength(6)]],
     imageUrl: ['', ''],
     price: ['', [Validators.required, Validators.minLength(1)]],
     description: ['', [Validators.required, Validators.minLength(10)]],
+    /*
     createdby: ['', [Validators.required, Validators.minLength(2)]],
     dateRelease: ['', [Validators.required, Validators.minLength(1)]],
-    modules:[[],[]]
+    modules: [[], []],
+    */
   });
 
   ngOnInit(): void {
     // check is editing...
     if (this.router.url.indexOf('edit') >= 0) {
       this.isEdit = true;
-      this.createCourseForm.patchValue(history.state);
-      this.previewUrl = this.courseService.getUrlImageCapa(this.courseService.courseDetail.id);
+
+      this.route.params.subscribe((params) => {
+        var idCourse = Number.parseInt(params['idCourse']);
+        this.courseService.getCourse(idCourse).subscribe((data) => {
+          this.course = data;
+          this.courseService
+            .fetchImageCapa(this.course.id)
+            .subscribe((img) => this.createImageCapa(img));
+          this.createCourseForm.patchValue(this.course);
+        });
+      });
     }
   }
 
   createCourse() {
+    Object.keys(this.createCourseForm.controls).forEach((field) => {
+      const control = this.createCourseForm.get(field); // {2}
+      control.markAsTouched({ onlySelf: true }); // {3}
+    });
+
     if (!this.createCourseForm.valid) {
- 
       console.log(this.createCourseForm.valid);
       return;
     }
 
     // Make sure to create a deep copy of the form-model
     this.course = Object.assign({}, this.createCourseForm.value);
-    
-    
 
     this.saveNewCourse();
-    
-
-    //this.uploadService.uploadImage(this.selectedFile);
   }
   saveNewCourse() {
     this.courseService.saveCourse(this.course).subscribe(
       (newHero: Course) => {
         if (this.selectedFile != null) {
-          this.uploadService.uploadImage(newHero.code, this.selectedFile);
+          this.uploadService.uploadImage(newHero.id, this.selectedFile);
         }
 
         this.messagesService.success('Salvo com Sucesso', null);
       },
-      error => {
+      (error) => {
         this.messagesService.error('Error > ' + error.error, null);
         console.log(error);
       }
@@ -89,24 +99,21 @@ export class CreateCourseComponent implements OnInit {
     this.navigationService.navigateToCourses();
   }
   saveEditCourse() {
-    
-      this.course.modules = [];
-      this.courseService.courseDetail.modules.forEach(value => this.course.modules.push(value));
-
-
-
-      
+    this.course.modules = [];
+    this.courseService.courseDetail.modules.forEach((value) =>
+      this.course.modules.push(value)
+    );
 
     this.courseService.updateCourse(this.course).subscribe(
       (newHero: Course) => {
         if (this.selectedFile != null) {
-          this.uploadService.uploadImage(newHero.code, this.selectedFile);
+          this.uploadService.uploadImage(newHero.id, this.selectedFile);
         }
 
         this.messagesService.success('Salvo com Sucesso', null);
         this.navigationService.navigateToCourses();
       },
-      error => {
+      (error) => {
         this.messagesService.error(error.error, null);
         console.log(error);
       }
@@ -128,8 +135,39 @@ export class CreateCourseComponent implements OnInit {
 
     var reader = new FileReader();
     reader.readAsDataURL(this.selectedFile);
-    reader.onload = _event => {
+    reader.onload = (_event) => {
       this.previewUrl = reader.result;
     };
+  }
+
+  isFieldValid(field: string) {
+    return (
+      !this.createCourseForm.get(field).valid &&
+      this.createCourseForm.get(field).touched
+    );
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field),
+    };
+  }
+
+  private createImageCapa(image: any) {
+    if (image && image.size > 0) {
+      let reader = new FileReader();
+
+      reader.addEventListener(
+        'load',
+        () => {
+          this.previewUrl = reader.result;
+        },
+        false
+      );
+
+      reader.readAsDataURL(image);
+    } else {
+    }
   }
 }

@@ -9,9 +9,11 @@ export class Module {
   duration: string;
   createdBy: string;
   number: string;
-  
+
   dateRelease: Date;
   dateCreated: Date;
-  
+
+  idCourse: number;
+
   lessons: Lesson[];
 }

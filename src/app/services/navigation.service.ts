@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NavigationService {
   constructor(private router: Router) {}
@@ -17,14 +17,17 @@ export class NavigationService {
   navigateToModuleDetail(idCourse: number, idModule: number) {
     this.router.navigate(['/module/' + idCourse + '/' + idModule]);
   }
+  navigateToModuleList(idCourse: number) {
+    this.router.navigate(['course/' + idCourse + '/modules']);
+  }
   navigateToLessonDetail(idCourse: number, idModule: number, idLesson: number) {
     this.router.navigate([
-      '/lesson/' + idCourse + '/' + idModule + '/' + idLesson
+      '/lesson/' + idCourse + '/' + idModule + '/' + idLesson,
     ]);
   }
   navigateToLessonEdit(idCourse: number, idModule: number, idLesson: number) {
     this.router.navigate([
-      '/edit-lesson/' + idCourse + '/' + idModule + '/' + idLesson
+      '/edit-lesson/' + idCourse + '/' + idModule + '/' + idLesson,
     ]);
   }
   navigateToModuleEdit(idCourse: number, idModule: number) {

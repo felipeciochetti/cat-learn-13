@@ -6,7 +6,7 @@ import { ModulesService } from 'src/app/services/modules.service';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
-  MatDialog
+  MatDialog,
 } from '@angular/material/dialog';
 import { CreateModulesComponent } from '../create-modules/create-modules.component';
 import { CourseService } from 'src/app/services/course.service';
@@ -16,13 +16,13 @@ import { Lesson } from 'src/app/model/lesson';
 import { MessagesService } from 'src/app/services/messages.service';
 import {
   ConfirmDialogModel,
-  ConfirmDialogComponent
+  ConfirmDialogComponent,
 } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-module-edit',
   templateUrl: './module-edit.component.html',
-  styleUrls: ['./module-edit.component.css']
+  styleUrls: ['./module-edit.component.css'],
 })
 export class ModuleEditComponent implements OnInit {
   constructor(
@@ -37,8 +37,6 @@ export class ModuleEditComponent implements OnInit {
   ngOnInit(): void {
     const theCourseId: number = +this.route.snapshot.paramMap.get('idCourse');
     const theModuleId: number = +this.route.snapshot.paramMap.get('idModule');
-
-    
   }
 
   setLessonDetail(lessonDetail: Lesson) {
@@ -50,7 +48,6 @@ export class ModuleEditComponent implements OnInit {
     );
   }
 
-  
   confirmDialogDelete(): void {
     const message = `Deseja deletar a Modulo?`;
 
@@ -58,38 +55,33 @@ export class ModuleEditComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       maxWidth: '400px',
-      data: dialogData
+      data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         this.deleteModule();
       }
     });
   }
-  
+
   deleteModule() {
-    this.modulesService.deleteModule(0,0).subscribe(
-      res => {
+    this.modulesService.deleteModule(0, 0).subscribe(
+      (res) => {
         this.messageService.success('Deletado com Sucesso', null);
         this.navigationService.navigateToCourses();
       },
-      error => {
+      (error) => {
         this.messageService.error(error.error, null);
         console.log(error);
       }
     );
   }
 
-
   sortedLessons(): Lesson[] {
-    this.courseService.moduleDetail.lessons.sort((a,b) => a.number.localeCompare(b.number));
+    this.courseService.moduleDetail.lessons.sort((a, b) =>
+      a.number.localeCompare(b.number)
+    );
     return this.courseService.moduleDetail.lessons;
   }
-  
-  public getUrlImageCapa(id:number){
-    return this.courseService.getUrlImageCapa(id);
-  }
-
-  
 }
