@@ -16,39 +16,15 @@
               {{ lesson.name }}
             </strong>
           </h1>
-          {{ url }}
         </div>
-        <div class="col">
-          <mat-divider></mat-divider>
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="editar licao"
-            aria-label="edit licao"
-            (click)="editLesson()"
-          >
-            editar
-          </button>
-
-          <button
-            mat-stroked-button
-            color="warn"
-            matTooltip="excluir licao"
-            aria-label="excluir licao"
-          >
-            deletar
-          </button>
-        </div>
+        <div class="col"></div>
       </div>
       <div class="col-sm-4 sidebar-panel">
-        <h1>{{ "courseContent" }}</h1>
+        <h1>Conteudo</h1>
 
         <mat-accordion>
           <mat-expansion-panel
-            *ngFor="
-              let module of courseService.courseDetail.modules;
-              let i = index
-            "
+            *ngFor="let module of course.modules; let i = index"
           >
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -66,7 +42,7 @@
                 [ngClass]="{
                   currentLesson: lesson.id === lesson.id
                 }"
-                (click)="setLessonDetail(lesson)"
+                (click)="goToLesson(lesson.id)"
               >
                 <mat-icon matListIcon style="color: blue"
                   >play_circle_filled

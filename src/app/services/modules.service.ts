@@ -8,7 +8,7 @@ import { Course } from '../model/course';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { CourseService } from './course.service';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +57,7 @@ export class ModulesService {
     return this.httpClient.get<Module>(moduleUrl + '/' + idModule);
   }
 
-  setDataForm(createModuleForm: FormGroup) {
+  setDataForm(createModuleForm: UntypedFormGroup) {
     createModuleForm.patchValue(this.courseService.moduleDetail);
   }
 

@@ -3,7 +3,7 @@ import { UrlsService } from './../../services/urls.service';
 import { MessagesService } from './../../services/messages.service';
 import { ModulesService } from './../../services/modules.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, NgForm } from '@angular/forms';
 import { Module } from 'src/app/model/module';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CourseService } from 'src/app/services/course.service';
@@ -24,7 +24,7 @@ export class CreateModulesComponent implements OnInit {
   course: Course;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private moduleService: ModulesService,
     public courseService: CourseService,
     private router: Router,
@@ -33,7 +33,7 @@ export class CreateModulesComponent implements OnInit {
     private navigationService: NavigationService
   ) {}
 
-  createModuleForm: FormGroup = this.fb.group({
+  createModuleForm: UntypedFormGroup = this.fb.group({
     id: ['', []],
 
     name: ['', [Validators.required, Validators.minLength(4)]],

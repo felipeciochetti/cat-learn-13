@@ -2,7 +2,7 @@ import { CourseService } from 'src/app/services/course.service';
 import { Lesson } from './../../model/lesson';
 import { Component, OnInit } from '@angular/core';
 import { LessonsService } from 'src/app/services/lessons.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Data } from 'src/app/model/data';
 import { Course } from 'src/app/model/course';
 import { Module } from 'src/app/model/module';
@@ -24,19 +24,33 @@ import { ModulesService } from 'src/app/services/modules.service';
 export class LessonComponent implements OnInit {
   url = '';
 
-  course: Course;
+  course: Course = new Course();
   module: Module;
   lesson: Lesson = new Lesson();
+
+  someSubscription: any;
 
   constructor(
     public lessonService: LessonsService,
     public courseService: CourseService,
     public moduleService: ModulesService,
     public navigationService: NavigationService,
+    private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     public messageService: MessagesService
-  ) {}
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.someSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Here is the dashing line comes in the picture.
+        // You need to tell the router that, you didn't visit or load the page previously, so mark the navigated flag to false as below.
+        this.router.navigated = false;
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     console.log('create component lesson');
@@ -64,15 +78,9 @@ export class LessonComponent implements OnInit {
       });
     });
   }
-  setLessonDetail(lessonDetail: Lesson) {
-    this.courseService.setLessonDetail(lessonDetail);
-    this.url = this.getContentLesson();
-    console.log(this.url);
-    this.navigationService.navigateToLessonDetail(
-      this.courseService.courseDetail.id,
-      this.courseService.moduleDetail.id,
-      lessonDetail.id
-    );
+  goToLesson(idLesson: number) {
+    this.router.navigateByUrl('/lesson/' + idLesson);
+    this.ngOnInit();
   }
 
   editLesson() {}
@@ -81,5 +89,10 @@ export class LessonComponent implements OnInit {
     return (
       this.lessonService.getContentStreamLesson() + this.lesson.id + '/stream'
     );
+  }
+  ngOnDestroy() {
+    if (this.someSubscription) {
+      this.someSubscription.unsubscribe();
+    }
   }
 }

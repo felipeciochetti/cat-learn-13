@@ -100,5 +100,7 @@
       }
     }
   },
-  "defaultProject": "cat-learn-13"
+  "cli": {
+    "analytics": false
+  }
 }

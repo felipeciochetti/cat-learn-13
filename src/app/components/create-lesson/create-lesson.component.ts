@@ -5,7 +5,11 @@ import { LessonsService } from 'src/app/services/lessons.service';
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from 'src/app/services/course.service';
 import { NavigationService } from 'src/app/services/navigation.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
@@ -33,7 +37,7 @@ export class CreateLessonComponent implements OnInit {
   message = '';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public courseService: CourseService,
     public lessonService: LessonsService,
     public modulesService: ModulesService,
@@ -44,7 +48,7 @@ export class CreateLessonComponent implements OnInit {
     private messagesService: MessagesService
   ) {}
 
-  createLessonForm: FormGroup = this.fb.group({
+  createLessonForm: UntypedFormGroup = this.fb.group({
     id: ['', []],
     name: ['', [Validators.required, Validators.minLength(4)]],
     number: ['', [Validators.required, Validators.minLength(1)]],
@@ -65,10 +69,6 @@ export class CreateLessonComponent implements OnInit {
           this.lesson = data;
 
           this.createLessonForm.patchValue(this.lesson);
-
-          
-
-
         });
       });
 
@@ -92,7 +92,7 @@ export class CreateLessonComponent implements OnInit {
     if (!this.createLessonForm.valid) {
       return;
     }
-    */
+
     this.lesson = Object.assign({}, this.createLessonForm.value);
 
     this.saveNewLesson();

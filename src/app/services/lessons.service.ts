@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Lesson } from './../model/lesson';
 import { ModulesService } from './../services/modules.service';
 import { Injectable } from '@angular/core';
@@ -60,7 +60,7 @@ export class LessonsService {
     return this.httpClient.get<Lesson>(lesson + '/' + id);
   }
 
-  setDataForm(createLessonForm: FormGroup) {
+  setDataForm(createLessonForm: UntypedFormGroup) {
     createLessonForm.patchValue(this.courseService.lessonDetail);
   }
 

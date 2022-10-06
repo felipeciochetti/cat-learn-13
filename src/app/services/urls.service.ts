@@ -13,6 +13,8 @@ export class UrlsService {
   //private urlServer = '';
   public courseListUrl = this.urlServer + this.course;
 
+  public courseCustomerUrl = this.urlServer + 'customer';
+
   public module = this.urlServer + 'module';
 
   public lesson = this.urlServer + 'lesson';

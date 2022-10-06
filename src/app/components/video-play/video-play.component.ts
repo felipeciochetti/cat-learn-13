@@ -12,10 +12,4 @@ export class VideoPlayComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
-  name = 'Angular';
-  @ViewChild('videoPlayer', { static: false }) videoplayer: ElementRef;
-  isPlay: boolean = false;
-  toggleVideo(event: any) {
-    this.videoplayer.nativeElement.play();
-  }
 }

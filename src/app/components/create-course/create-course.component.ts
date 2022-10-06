@@ -2,7 +2,7 @@ import { MessagesService } from './../../services/messages.service';
 import { CreateModulesComponent } from './../create-modules/create-modules.component';
 import { CourseService } from 'src/app/services/course.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Course } from 'src/app/model/course';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
@@ -25,7 +25,7 @@ export class CreateCourseComponent implements OnInit {
   isEdit: boolean;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public courseService: CourseService,
     private router: Router,
     private route: ActivatedRoute,
@@ -34,7 +34,7 @@ export class CreateCourseComponent implements OnInit {
     private navigationService: NavigationService
   ) {}
 
-  createCourseForm: FormGroup = this.fb.group({
+  createCourseForm: UntypedFormGroup = this.fb.group({
     id: ['', []],
 
     name: ['', [Validators.required, Validators.minLength(6)]],

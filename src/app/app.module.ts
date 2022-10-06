@@ -56,6 +56,7 @@ import { CartDetailsComponent } from './components/cart-details/cart-details.com
 import { LoginComponent } from './components/login/login.component';
 import { LoginStatusComponent } from './components/login-status/login-status.component';
 import {
+  OktaAuthGuard,
   OktaAuthModule,
   OktaCallbackComponent,
   OKTA_CONFIG,
@@ -63,6 +64,15 @@ import {
 import catLearnConfig from './config/cat-learn-config';
 import { HomeComponent } from './components/home/home.component';
 import { FieldErrorDisplayComponent } from './field-error-display/field-error-display.component';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { CustomerCoursesComponent } from './components/customer-courses/customer-courses.component';
+import { CustomerCoursesDetailsComponent } from './components/customer-courses-details/customer-courses-details.component';
+import { OktaGroupGuard } from './components/guard/okta-group.guard';
+import { CustomerCoursesListComponent } from './components/customer-courses-list/customer-courses-list.component';
+import { CourseHandlerGuardModule } from './components/guard/course-handle-guard';
 
 const oktaConfig = Object.assign(
   {
@@ -95,9 +105,26 @@ const routes: Routes = [
   {
     path: 'module/:idModule/edit-lesson/:idLesson',
     component: CreateLessonComponent,
+    canActivate: [OktaAuthGuard],
   },
 
-  { path: 'course/:idCourse/modules', component: ModuleDetailComponent },
+  {
+    path: 'user/customer-course-details',
+    component: CustomerCoursesListComponent,
+    canActivate: [CourseHandlerGuardModule],
+    data: { groups: 'admin' },
+  },
+  { path: 'visitor/courses', component: CourseListComponent },
+
+  {
+    path: 'course/:idCourse/modules',
+    component: ModuleDetailComponent,
+    canActivate: [CourseHandlerGuardModule],
+  },
+  {
+    path: 'course/:idCourse',
+    component: CourseDetailComponent,
+  },
 
   { path: 'lesson/:idLesson', component: LessonComponent },
 
@@ -114,18 +141,14 @@ const routes: Routes = [
   //USER = MEANS USER LOGADO
 
   // VISITOR = MEANS VISITOR
-
-  { path: 'visitor/courses', component: CourseListComponent },
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-
     HeaderComponent,
     CourseListComponent,
     CourseDetailComponent,
-
     LoginStatusComponent,
     LoginComponent,
     CreateCourseComponent,
@@ -144,9 +167,11 @@ const routes: Routes = [
     CarouselComponent,
     CartStatusComponent,
     CartDetailsComponent,
-
     HomeComponent,
     FieldErrorDisplayComponent,
+    CustomerCoursesComponent,
+    CustomerCoursesDetailsComponent,
+    CustomerCoursesListComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -180,12 +205,17 @@ const routes: Routes = [
     MatIconModule,
     MatExpansionModule,
     OktaAuthModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-br' },
     { provide: OKTA_CONFIG, useValue: oktaConfig },
+    OktaGroupGuard,
+    CourseHandlerGuardModule,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ToastComponent],
 })
 export class AppModule {}
